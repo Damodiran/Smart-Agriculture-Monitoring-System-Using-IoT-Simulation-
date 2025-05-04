@@ -35,7 +35,7 @@ Core Objectives:
  📦 How to Run
 
 1. Clone this repository.
-2. Run the flask program, then copy and paste the IP address from the terminal and run it on the search engine.
+2. Run the flask (app.py) program, then copy and paste the IP address from the terminal and run it on the search engine.
 
 
 🧑‍💻 Authors
