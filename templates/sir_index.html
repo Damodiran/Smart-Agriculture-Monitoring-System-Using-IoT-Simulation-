@@ -1,0 +1,72 @@
+<!doctype html>
+<head>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+</head>
+
+<style>
+h3, h4 {text-align: center;}
+span {font-weight: bold;}
+</style>
+
+<script type=text/javascript>
+
+$(
+    // When the LED button is pressed (change)
+    // do an ajax request to server to change LED state
+    function() 
+    {
+        $('#flip').change(function() 
+        {
+            $.getJSON('/_led', {state: this.state.first});
+        });     
+    }
+);
+
+$(
+    // periodically (500ms) do an ajax request to get the button state
+    // modify the span tag to reflect the state (pressed or not)
+    // the state text comes from the JSON string returned by the server
+    function button() 
+    {
+        $.getJSON('/_button', function(data)
+            {
+                $("#buttonState").text(data.buttonState);
+                setTimeout(function(){button();},500);
+            });
+    }
+);
+
+// Call the button and updateUptime functions when the document is ready
+$(document).ready(function() {
+    button();
+    updateUptime();
+});
+
+</script>
+
+<!-- Simple JQuery Mobile page that display the button state on the breadboard -->
+<!-- You can also change the LED state with the slider switch -->
+<!-- The Raspberry Pi uptime is displayed in the footer (Jinja2 expands the template tag) -->
+
+<div data-role="page" data-theme="a">
+  <div data-role="header">
+    <div><h3>Raspberry Pi Web Control</h3></div>
+  </div>
+  <div data-role="content">
+    <form>
+    <p>The button is <span id="buttonState"></span></p>
+    <br>
+    <select name="flip" id="flip" data-role="slider" style="float:left;">
+        <option value="off">LED off</option>
+        <option value="on">LED On</option>
+    </select>
+    </form>
+  </div>
+
+ <div data-role="footer">
+    <div><h4>This Raspberry Pi has been ........</h4></div>
+  </div>
+</div>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* General styles */
+body {
+
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    border: 15px solid black;
+    border-style: solid;
+}
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 50px;
+    padding-top: 20px;
+    margin-top: 15px;
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    display: block;
+}
+
+.sidebar ul li a:hover {
+    background-color: #555;
+}
+
+/* Content styles */
+.content {
+    flex: 1;
+    padding: 40px;
+}
+
+.header {
+    background-color: #555;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.main-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.data-card {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+.data-card h3 {
+    color: #333;
+}
+
+.data-card p {
+    color: #666;
+}
+
+.chart-container {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Additional styles for the line chart */
+.canvas-container {
+    position: relative;
+    width: 100%;
+}
+
+#line-chart {
+    width: 100%;
+    height: 400px;
+}
+
+    </style>
+</head>
+<body>
+    <script>
+       document.addEventListener("DOMContentLoaded", function() {
+    // Sample data for demonstration
+    var moistureData = 50; // Example: Moisture percentage
+    var temperatureData = 25; // Example: Temperature in Celsius
+    var humidityData = 60; // Example: Humidity percentage
+    
+    // Update data values
+    document.getElementById('moisture-value').textContent = moistureData + '%';
+    document.getElementById('temperature-value').textContent = temperatureData + '°C';
+    document.getElementById('humidity-value').textContent = humidityData + '%';
+
+    // Chart.js configuration
+    var ctx = document.getElementById('line-chart').getContext('2d');
+    var lineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30'],
+            datasets: [{
+                label: 'Temperature (°C)',
+                data: [20, 21, 22, 23, 24, 25], // Sample temperature data
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false
+            }, {
+                label: 'Humidity (%)',
+                data: [50, 55, 60, 65, 70, 75], // Sample humidity data
+                borderColor: 'rgb(54, 162, 235)',
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    // Simulate updating data values every 5 seconds (for demonstration purposes)
+    setInterval(function() {
+        // Update sample data
+        moistureData = Math.floor(Math.random() * 100); // Random moisture value
+        temperatureData = Math.floor(Math.random() * 30) + 20; // Random temperature value between 20 and 50
+        humidityData = Math.floor(Math.random() * 50) + 50; // Random humidity value between 50 and 100
+
+        // Update displayed data values
+        document.getElementById('moisture-value').textContent = moistureData + '%'; 
+        document.getElementById('temperature-value').textContent = temperatureData + '°C';
+        document.getElementById('humidity-value').textContent = humidityData + '%';
+        
+        // Update line chart data (update only the first dataset for demonstration)
+        lineChart.data.datasets[0].data.push(temperatureData);
+        lineChart.data.datasets[1].data.push(humidityData);
+        lineChart.data.labels.push('...');
+        lineChart.update();
+    }, 20000); // Update every 2mins
+});
+    </script>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a href="/home" class="active">Home</a></li>
+                <li><a href="/analytics">Analytics</a></li>
+                <li><a href="/report">Reports</a></li>
+                <li><a href="/setting">Settings</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="header">
+                <h2>Dashboard</h2>
+            </div>
+            <div class="main-content">
+                <div class="data-card" id="moisture-card">
+                        <h3>Moisture</h3>
+                    <p id="moisture-value">-</p>
+                </div>
+                <div class="data-card" id="temperature-card">
+                    <h3>Temperature</h3>
+                    <p id="temperature-value">-</p>
+                </div>
+                <div class="data-card" id="humidity-card">
+                    <h3>Humidity</h3>
+                    <p id="humidity-value">-</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="line-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
