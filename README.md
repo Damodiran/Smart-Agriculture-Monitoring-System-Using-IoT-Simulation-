@@ -40,8 +40,8 @@ Core Objectives:
 
 🧑‍💻 Authors
 
-- Damodiran – Final Year B.Tech IT Student
+- Damodiran N – Final Year B.Tech IT Student
 
 📄 License
 
-This project is for academic use. For commercial inquiries, please contact the author.
+This project is for academic use.
